@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>SafeSearch - Browse without Tracking</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
+        type="text/css" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <style>
+        body {
+            transition: ease 0.5s;
+        }
+
+        .card {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .resLink {
+            color: black;
+            font-size: 20px !important;
+            font-weight: bold;
+            font-decoration: none;
+        }
+       .whiteReslink {
+            color: white;
+            font-size: 20px !important;
+            font-weight: bold;
+            font-decoration: none;
+        }
+
+        .lborder {
+            border-color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation-->
+    <span class="sticky-top sticknav">
+        <nav class="navbar static-top navbar-fixed-top bg-white" id="navbar">
+            <div class="container">
+                <a class="navbar-brand" id="pageHeader" href="index.html">SafeSearch</a>
+                <button class="btn btn-primary" onclick="toggleMode()" id="toggleButton"><i
+                        class='bi bi-moon'></i></button>
+            </div>
+        </nav>
+    </span>
+
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="text-center text-white">
+                    <form class="form-subscribe " id="contactForm" action="search.html">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control form-control-lg" id="searchInput" type="text"
+                                    placeholder="Search anything you want..." name="query" />
+                            </div>
+                            <div class="col-auto"><button class="btn btn-primary btn-lg" id="submitButton"
+                                    type="submit">Search</button></div>
+                        </div>
+                        <input type="hidden" value="light" name="theme" class="hiddenThemeInput">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="results">
+        <div class="text-center hidden" style="margin-top: 10px" id="noResults">
+            <h1>No Results found</h1>
+            <img src="./assets/6134065.png" alt="" width="100">
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script>
+        const queryParam = urlParams.get('query');
+        const searchInput = document.getElementById('searchInput');
+        searchInput.value = queryParam;
+    </script>
+    <script>
+
+        const apiKey = 'AIzaSyDfXavb1sGYxfLh6R4oevFd-F9iWyVBdwY';
+        const cx = '27f96e5b8f2be4769';
+        const query = queryParam;
+
+        // Erstellen der API-URL
+        const apiUrl = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${query}`;
+        // Senden der API-Anfrage
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Extrahieren der Suchergebnisse
+                const results = data.items;
+
+                // Auflisten der Suchergebnisse im HTML-Dokument
+                if(urlParams.get("theme") == "dark")  {
+                const resultContainer = document.getElementById('results');
+                results.forEach(result => {
+                    const title = result.title;
+                    const link = result.link;
+                    const snippet = result.snippet;
+
+                    const resultDiv = document.createElement('div');
+                    resultDiv.innerHTML = `
+                        <div class='card bg-dark text-white border border-primary'>
+                        <p style='color: grey'>${link}</p>
+                        <p class='resP'><a href="${link}" class='whiteReslink'>${title}</a></p>
+                        <p>${snippet}</p>
+                        </div>
+                        
+                        `;
+                    resultContainer.appendChild(resultDiv);
+                });
+			} else {
+				const resultContainer = document.getElementById('results');
+                results.forEach(result => {
+                    const title = result.title;
+                    const link = result.link;
+                    const snippet = result.snippet;
+
+                    const resultDiv = document.createElement('div');
+                    resultDiv.innerHTML = `
+                        <div class='card'>
+                        <p style='color: grey'>${link}</p>
+                        <p class='resP'><a href="${link}" class='resLink'>${title}</a></p>
+                        <p>${snippet}</p>
+                        </div>
+                        
+                        `;
+                    resultContainer.appendChild(resultDiv);
+                });
+			}
+            })
+            .catch(error => console.error(error));
+        if (document.getElementById("results").innerHTML == '<div class="text-center hidden" style="margin-top: 10px" id="noResults"><h1>No Results found</h1><img src="./assets/6134065.png" alt="" width="100"></div>') {
+            document.getElementById("noResults").classList.remove("hidden");
+        }
+    </script>
+    <script>
+    const themeCards = document.querySelectorAll('.card');
+	for (let i = 0; i < themeCards.length; i++) {
+	  const card = themeCards[i];
+	  card.classList.add('bg-dark');
+	}
+    </script>
+
+</body>
+
+</html>
