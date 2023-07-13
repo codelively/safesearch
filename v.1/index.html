@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSearch - Minimalistic Search Engine</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+</head>
+
+<body>
+    <div class="w3-bar w3-border navbar">
+        <a href="index.html" class="w3-bar-item w3-button navlink w3-hover-none w3-hover-text-white">Home</a>
+        <a href="about.html" class="w3-bar-item w3-button navlink w3-hover-none w3-hover-text-white">About</a>
+        <a href="https://github.com/codelively/safesearch" class="w3-bar-item w3-button navlink w3-hover-none w3-hover-text-white w3-right">Github</a>
+        <a href="https://github.com/codelively/" class="w3-bar-item w3-button navlink w3-hover-none w3-hover-text-white w3-right">CodeLively</a>
+        <div class="w3-dropdown-hover w3-hover-none w3-hover-text-white">
+            <button class="w3-button w3-hover-none w3-hover-text-white">Versions</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4" id="versions-dropdown">
+              <a href="#" class="w3-bar-item w3-button">Version 1.0</a>
+              <a href="#" class="w3-bar-item w3-button">BETA</a>
+            </div>
+          </div>
+    </div>
+    <div class="body">
+        <div class="search__container">
+            <h1>SafeSearch</h1>
+            <p class="search__title">Go ahead and search safely</p>
+            <form action="index.html" method="GET">
+                <div class="input-wrapper">
+                    <input type="text" class="input-field" id="searchInput" name="query" placeholder="Search something...">
+                </div>
+            </form>
+        </div>
+
+    <div class="credits__container w3-cell-row" id="results">
+    </div>
+    </div>
+    <script src="versions.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Query parameter is inserted in 'searchInput'
+        if(getQuery()) {
+            document.getElementById("searchInput").value = getQuery();
+            // Inserts search results
+            getResults(getQuery())
+            .then(results => {
+                const resultContainer = document.getElementById('results');
+                results.forEach(result => {
+                const title = result.title;
+                const link = result.link;
+                const snippet = result.snippet;
+
+                const resultDiv = document.createElement('div');
+                const parser = document.createElement('a');
+                parser.href = link;
+
+                const subdomain = parser.hostname;
+                resultDiv.innerHTML = `
+                    <div class='card w3-animate-left'>
+                        <p class="cardLink">${subdomain}</p>
+                    <h3 class='resHeading'><a href="${link}" class='resLink'>${title}</a></h3>
+                    <p class='resDes w3-animate-opacity'>${snippet}</p>
+                    </div>
+                `;
+                resultContainer.appendChild(resultDiv);
+                });
+            });
+        } else {
+            // Main Page (no search query)
+        }
+
+        if (window.innerWidth >= 1024 && window.innerHeight >= 768) {
+            console.log("Window is big enough");
+        } else {
+            alert("SafeSearch is designed for devices with a large screen!");
+        }
+        
+        // Check Internet Connection
+        if (!checkInternetConnection()) {
+			document.getElementById("results").innerHTML = "No Internet Connection";
+			document.getElementById("searchInput").disabled = true;
+			document.getElementById("searchInput").value = "No Internet Connection";
+		} 
+    </script>
+</body>
+
+</html>
