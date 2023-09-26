@@ -22,19 +22,41 @@
         body {
             transition: ease 0.5s;
         }
+        input {
+            transition: ease 0.5s;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(4.1px);
+            -webkit-backdrop-filter: blur(4.1px);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+        input:focus {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+        .masthead {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
     </style>
 </head>
 
-<body class="" data-bs-theme="dark">
+<body class="bg-dark text-light" data-bs-theme="dark">
     <!-- Navigation-->
     <span class="sticky-top sticknav">
-        <nav class="navbar static-top navbar-fixed-top bg-white" id="navbar">
+        <nav class="navbar static-top navbar-fixed-top bg-dark text-white" id="navbar">
             <div class="container">
-                <a class="navbar-brand" id="pageHeader">SafeSearch</a>
+                <a class="navbar-brand text-white" id="pageHeader">SafeSearch</a>
                 <form id="navSearch" action="search.html" style="display:block;">
                     <div class="row">
                         <div class="col">
-                            <input class="form-control" id="navSearchInput" type="text"
+                            <input class="form-control bg-dark" id="navSearchInput" type="text"
                                 placeholder="Search anything you want..." name="query" />
                         </div>
                         <div class="col-auto"><button class="btn btn-primary" id="submitButton"
@@ -42,7 +64,7 @@
                     </div>
                     <input type="hidden" value="light" name="theme" class="hiddenThemeInput">
                 </form>
-                <button class="btn btn-primary" onclick="toggleMode()" id=""><i
+                <button class="btn btn-primary" onclick="" id=""><i
                         class='bi bi-moon'></i></button>
             </div>
         </nav>
@@ -58,11 +80,9 @@
                         <form class="form-subscribe " id="contactForm" action="search.html">
                             <div class="row">
                                 <div class="col">
-                                    <input class="form-control form-control-lg" id="searchInput" type="text"
-                                        placeholder="Search anything you want..." name="query" />
+                                    <input class="form-control-lg text-white" id="searchInput" type="text"
+                                        placeholder="Search anything you want..." name="query" style="width: 70%" />
                                 </div>
-                                <div class="col-auto"><button class="btn btn-primary btn-lg" id="submitButton"
-                                        type="submit">Search</button></div>
                             </div>
                             <input type="hidden" value="light" name="theme" class="hiddenThemeInput">
                         </form>

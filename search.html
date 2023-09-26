@@ -19,46 +19,71 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <style>
+        @keyframes moveGradient {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 0%;
+            }
+        }
         body {
             transition: ease 0.5s;
+            background-repeat: no-repeat;
+            background: rgb(59,59,59);
+            background: linear-gradient(346deg, rgba(59,59,59,0.9023810207676821) 0%, rgba(1,1,70,0.5438376034007353) 57%, rgba(0,98,117,0.9471989479385504) 100%);
         }
 
         .card {
             margin: 10px;
             padding: 10px;
+            transition: ease 0.5s;
+            background: rgba(255, 255, 255, 0);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10.8px);
+            -webkit-backdrop-filter: blur(10.8px);
+            border: 1px solid rgba(255, 255, 255, 1);
+
+        }
+
+        .card:hover {
+            background: rgba(59, 0, 255, 0.18);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: none;
+            animation: moveGradient 5s linear infinite;
         }
 
         .resLink {
-            color: black;
             font-size: 20px !important;
             font-weight: bold;
-            font-decoration: none;
-        }
-       .whiteReslink {
-            color: white;
-            font-size: 20px !important;
-            font-weight: bold;
-            font-decoration: none;
-        }
-
-        .lborder {
-            border-color: white;
+            text-decoration: none;
         }
 
         .hidden {
             display: none;
         }
+        #searchInput {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
     </style>
 </head>
 
-<body>
+<body data-bs-theme="dark" class="bg-dark">
     <!-- Navigation-->
-    <span class="sticky-top sticknav">
-        <nav class="navbar static-top navbar-fixed-top bg-white" id="navbar">
+    <span class="sticky-top sticknav bg-secondary text-white">
+        <nav class="navbar static-top navbar-fixed-top bg-dark" id="navbar">
             <div class="container">
-                <a class="navbar-brand" id="pageHeader" href="index.html">SafeSearch</a>
-                <button class="btn btn-primary" onclick="toggleMode()" id="toggleButton"><i
-                        class='bi bi-moon'></i></button>
+                <a class="navbar-brand text-white" id="pageHeader" href="index.html">SafeSearch</a>
+                <button class="btn btn-danger" id="toggleButton"><i class="bi bi-x-circle"></i></button>
             </div>
         </nav>
     </span>
@@ -70,13 +95,12 @@
                     <form class="form-subscribe " id="contactForm" action="search.html">
                         <div class="row">
                             <div class="col">
-                                <input class="form-control form-control-lg" id="searchInput" type="text"
+                                <input class="form-control form-control-lg text-light" id="searchInput" type="text"
                                     placeholder="Search anything you want..." name="query" />
                             </div>
                             <div class="col-auto"><button class="btn btn-primary btn-lg" id="submitButton"
                                     type="submit">Search</button></div>
                         </div>
-                        <input type="hidden" value="light" name="theme" class="hiddenThemeInput">
                     </form>
                 </div>
             </div>
@@ -119,7 +143,6 @@
                 const results = data.items;
 
                 // Auflisten der Suchergebnisse im HTML-Dokument
-                if(urlParams.get("theme") == "dark")  {
                 const resultContainer = document.getElementById('results');
                 results.forEach(result => {
                     const title = result.title;
@@ -128,46 +151,27 @@
 
                     const resultDiv = document.createElement('div');
                     resultDiv.innerHTML = `
-                        <div class='card bg-dark text-white border border-primary'>
-                        <p style='color: grey'>${link}</p>
-                        <p class='resP'><a href="${link}" class='whiteReslink'>${title}</a></p>
-                        <p>${snippet}</p>
+                        <div class='card rounded'>
+                        <span class="resultUrl text-muted">${link}</span>
+                        <p class='resP'><a href="${link}" class='resLink text-white'>${title}</a></p>
+                        <p class="text-secondary">${snippet}</p>
                         </div>
-                        
-                        `;
+                    `;
                     resultContainer.appendChild(resultDiv);
                 });
-			} else {
-				const resultContainer = document.getElementById('results');
-                results.forEach(result => {
-                    const title = result.title;
-                    const link = result.link;
-                    const snippet = result.snippet;
 
-                    const resultDiv = document.createElement('div');
-                    resultDiv.innerHTML = `
-                        <div class='card'>
-                        <p style='color: grey'>${link}</p>
-                        <p class='resP'><a href="${link}" class='resLink'>${title}</a></p>
-                        <p>${snippet}</p>
+                if (results.length === 0) {
+                    const noResultsDiv = document.createElement('div');
+                    noResultsDiv.innerHTML = `
+                        <div class="text-center" style="margin-top: 10px" id="noResults">
+                            <h1>No Results found</h1>
+                            <img src="./assets/6134065.png" alt="" width="100">
                         </div>
-                        
-                        `;
-                    resultContainer.appendChild(resultDiv);
-                });
-			}
+                    `;
+                    resultContainer.appendChild(noResultsDiv);
+                }
             })
             .catch(error => console.error(error));
-        if (document.getElementById("results").innerHTML == '<div class="text-center hidden" style="margin-top: 10px" id="noResults"><h1>No Results found</h1><img src="./assets/6134065.png" alt="" width="100"></div>') {
-            document.getElementById("noResults").classList.remove("hidden");
-        }
-    </script>
-    <script>
-    const themeCards = document.querySelectorAll('.card');
-	for (let i = 0; i < themeCards.length; i++) {
-	  const card = themeCards[i];
-	  card.classList.add('bg-dark');
-	}
     </script>
 
 </body>
