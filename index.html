@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JavaScript Text Animation</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/baffle@0.3.6/dist/baffle.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #0F2027;
+
+        }
+
+        .container {
+            width: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .data {
+            text-align: center;
+
+            color: #fff;
+            font-family: poppins;
+            font-size: 2em;
+            letter-spacing: 12px;
+            font-weight: 600;
+        }
+
+        .quote {
+            text-align: center;
+            color: #fff;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            letter-spacing: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="data">
+            Site not available
+        </div>
+        <div class="quote">
+            Due to some security issues we had to make this page private! <br>We are working on the security of the project <br>and will publish it again soon
+        </div>
+    </div>
+    <script>
+        const text = baffle('.data');
+        text.set({
+            characters: 'zpxzVpasdfh86136░█▒ ░░░█▓ >░░ ▓/▒█▓ █ █>█▒sayg▒ ░░░█▓ >yf',
+            speed: 150
+        });
+        text.start();
+        text.reveal(80000);
+
+        const text1 = baffle('.quote');
+        text1.set({
+            characters: 'qwertyuiopasdfgh8613611888',
+            speed: 140
+        });
+        text1.start();
+        text1.reveal(5500);
+    </script>
+</body>
+
+</html>
